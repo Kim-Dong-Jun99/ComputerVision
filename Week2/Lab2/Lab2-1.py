@@ -2,7 +2,7 @@ import cv2 as cv
 import sys
 from matplotlib import pyplot as plt
 
-img = cv.imread('../Lab2 Image/lena_color.png')
+img = cv.imread('../Lab2 Image/myimage.png')
 
 if img is None:
     sys.exit("파일을 찾을 수 없습니다")
