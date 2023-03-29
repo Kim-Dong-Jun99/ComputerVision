@@ -18,7 +18,7 @@ OpenCv --> BGR image
 
 gray = cv.cvtColor(img, cv.COLOR_BGR2GRAY)
 
-roi = img[50:500, 30:580] # image cropping (ROI extraction by slicing)
+roi = img[50:300, 30:300] # image cropping (ROI extraction by slicing)
 
 cv.imshow('Color Image', img)
 cv.imshow('Gray Image', gray)
@@ -28,11 +28,11 @@ cv.imshow('Cropped Image', roi)
 matplotlib --> RGB image
 """
 
-RGB_img = cv.cvtColor(img, cv.COLOR_BGR2RGB)
-RGB_roi = RGB_img[50:400, 30:480]
-roi = img[50:400, 30:480]
-plt.imshow(RGB_roi)
-plt.show()
+# RGB_img = cv.cvtColor(img, cv.COLOR_BGR2RGB)
+# RGB_roi = RGB_img[50:400, 30:480]
+# roi = img[50:400, 30:480]
+# plt.imshow(RGB_roi)
+# plt.show()
 
 cv.waitKey()
 cv.destroyAllWindows()
