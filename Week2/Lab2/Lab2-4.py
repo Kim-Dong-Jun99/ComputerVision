@@ -5,7 +5,7 @@ import numpy as np
 Image Pyramid
 """
 
-src = cv.imread('../Lab2 Image/pizza_512.jpg', cv.IMREAD_COLOR)
+src = cv.imread('../Lab2 Image/apple.jpg', cv.IMREAD_COLOR)
 height, width, channel = src.shape
 
 dst = cv.pyrDown(src)
@@ -20,63 +20,63 @@ print(dst2.shape)
 """
 Image Blending
 """
-pizza = cv.imread('../Lab2 Image/pizza_512.jpg')
-burger = cv.imread('../Lab2 Image/burger_512.jpg')
+apple = cv.imread('../Lab2 Image/apple.jpg')
+orange = cv.imread('../Lab2 Image/orange.jpg')
 
-print(pizza.shape)
-print(burger.shape)
+print(apple.shape)
+print(orange.shape)
 
-pizza_burger = np.hstack((pizza[:, :256], burger[:, 256:]))
+apple_orange = np.hstack((apple[:, :256], orange[:, 256:]))
 
-# generate Gaussian pyramid for pizza
-pizza_copy = pizza.copy()
-gp_pizza = [pizza_copy]
+# generate Gaussian pyramid for apple
+apple_copy = apple.copy()
+gp_apple = [apple_copy]
 for i in range(6):
-    pizza_copy = cv.pyrDown(pizza_copy)
-    gp_pizza.append(pizza_copy)
+    apple_copy = cv.pyrDown(apple_copy)
+    gp_apple.append(apple_copy)
 
-# generate Gaussian pyramid for burger
-burger_copy = burger.copy()
-gp_burger = [burger_copy]
+# generate Gaussian pyramid for orange
+orange_copy = orange.copy()
+gp_orange = [orange_copy]
 for i in range(6):
-    burger_copy = cv.pyrDown(burger_copy)
-    gp_burger.append(burger_copy)
+    orange_copy = cv.pyrDown(orange_copy)
+    gp_orange.append(orange_copy)
 
-# generate laplacian pyramid for pizza
-pizza_copy = gp_pizza[5]
-lp_pizza = [pizza_copy]
+# generate laplacian pyramid for apple
+apple_copy = gp_apple[5]
+lp_apple = [apple_copy]
 for i in range(5, 0, -1):
-    gaussian_expanded = cv.pyrUp(gp_pizza[i])
-    laplacian = cv.subtract(gp_pizza[i - 1], gaussian_expanded)
-    lp_pizza.append(laplacian)
+    gaussian_expanded = cv.pyrUp(gp_apple[i])
+    laplacian = cv.subtract(gp_apple[i - 1], gaussian_expanded)
+    lp_apple.append(laplacian)
 
-# generate laplacian pyramid for burger
-burger_copy = gp_burger[5]
-lp_burger = [burger_copy]
+# generate laplacian pyramid for orange
+orange_copy = gp_orange[5]
+lp_orange = [orange_copy]
 for i in range(5, 0, -1):
-    gaussian_expanded = cv.pyrUp(gp_burger[i])
-    laplacian = cv.subtract(gp_burger[i - 1], gaussian_expanded)
-    lp_burger.append(laplacian)
+    gaussian_expanded = cv.pyrUp(gp_orange[i])
+    laplacian = cv.subtract(gp_orange[i - 1], gaussian_expanded)
+    lp_orange.append(laplacian)
 
 # Now add left and right halves of images in each level
-pizza_burger_pyramid = []
+apple_orange_pyramid = []
 n = 0
-for pizza_lap, burger_lap in zip(lp_pizza, lp_burger):
+for apple_lap, orange_lap in zip(lp_apple, lp_orange):
     n += 1
-    cols, rows, ch = pizza_lap.shape
-    laplacian = np.hstack((pizza_lap[:, 0:int(cols / 2)], burger_lap[:, int(cols / 2):],))
-    pizza_burger_pyramid.append(laplacian)
+    cols, rows, ch = apple_lap.shape
+    laplacian = np.hstack((apple_lap[:, 0:int(cols / 2)], orange_lap[:, int(cols / 2):],))
+    apple_orange_pyramid.append(laplacian)
 
 # now reconstruct
-pizza_burger_reconstruct = pizza_burger_pyramid[0]
+apple_orange_reconstruct = apple_orange_pyramid[0]
 for i in range(1, 6):
-    pizza_burger_reconstruct = cv.pyrUp(pizza_burger_reconstruct)
-    pizza_burger_reconstruct = cv.add(pizza_burger_pyramid[i], pizza_burger_reconstruct)
+    apple_orange_reconstruct = cv.pyrUp(apple_orange_reconstruct)
+    apple_orange_reconstruct = cv.add(apple_orange_pyramid[i], apple_orange_reconstruct)
 
-cv.imshow("pizza", pizza)
-cv.imshow("burger", burger)
-cv.imshow("pizza_burger", pizza_burger)
-cv.imshow("pizza_burger_reconstruct", pizza_burger_reconstruct)
+cv.imshow("apple", apple)
+cv.imshow("orange", orange)
+cv.imshow("apple_orange", apple_orange)
+cv.imshow("apple_orange_reconstruct", apple_orange_reconstruct)
 
 cv.waitKey()
 cv.destroyAllWindows()
